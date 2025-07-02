@@ -1,0 +1,90 @@
+/* Đảm bảo body và html chiếm full màn hình */
+.header{
+    background-color: #333;
+    padding:10px;
+}
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Bọc toàn bộ trang */
+.body {
+  display: flex;
+  height: 100%;
+}
+
+/* Thanh sider bên trái */
+.sider {
+  width: 200px;
+  background-color: #333; /* Màu đen */
+  color: #fff;
+  padding: 10px 10px;
+}
+
+/* Menu bên trong sider */
+.inner-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inner-menu ul li {
+  margin-bottom: 10px;
+}
+
+.inner-menu ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.inner-menu ul li a:hover {
+  background-color:#333;
+}
+
+/* Phần nội dung chính */
+.main {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+/* flash  */
+[show-alert] {
+    position:fixed;
+    top:70px;
+    right: 15px;
+    z-index: 999;
+}
+[show-alert].alert-hidden {
+    animation-duration: 0.5s;
+    animation-name: alert-hidden;
+    animation-fill-mode: both;
+
+}
+@keyframes alert-hidden {
+    from{
+        right:15px;
+    }
+    to{
+        right: -100%;
+        display: none;
+    }
+}
+[show-alert] [close-alert]{
+    background-color: #ffffff;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 50%;
+    cursor: pointer;
+}
+/* end flash  */
