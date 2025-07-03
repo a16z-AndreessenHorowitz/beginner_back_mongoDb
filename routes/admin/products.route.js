@@ -7,5 +7,6 @@ route.get("/",controller.index)
 
 route.delete("/delete/:id",controller.deleteItem)
 
+route.patch("/change-status/:status/:id",controller.changeStatus)
 
 module.exports=route

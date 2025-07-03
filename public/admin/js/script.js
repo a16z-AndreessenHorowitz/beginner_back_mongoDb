@@ -48,3 +48,23 @@ if (buttonStatus.length > 0) {
   })
 }
 //button-status
+
+// pagination 
+const pagination=document.querySelectorAll("[button-pagination]")
+if(pagination.length>0){
+  let url=new URL(window.location.href)
+  pagination.forEach(pageitem=>{
+    pageitem.addEventListener("click",(e)=>{
+      const page=pageitem.getAttribute("button-pagination")
+      if(page){
+        url.searchParams.set("page",page)
+      }
+      else{
+        url.searchParams.delete("page")
+      }
+      window.location.href=url.href
+    })
+  })
+  
+}
+// pagination 

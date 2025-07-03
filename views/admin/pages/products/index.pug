@@ -2,6 +2,7 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 include ../../mixins/filterStatus.pug
 include ../../mixins/search.pug 
+include ../../mixins/pagination.pug
 
 block main 
   +alert-success(5000)
@@ -51,17 +52,24 @@ block main
                 input(type="number" style="width:60px" min="1" value=item.position name="position")
               td
                 if(item.status == "active") 
-                  a(href="javascript:;" class="badge badge-success") Hoạt động
+                  a(href="javascript:;" class="badge badge-success" data-status=item.status data-id=item.id button-change-status ) Hoạt động
                 else 
-                  a(href="javascript:;" class="badge badge-danger")  Ngưng hoạt động
+                  a(href="javascript:;" class="badge badge-danger" data-status=item.status data-id=item.id button-change-status)  Ngưng hoạt động
               td 
                 a(href=`${prefixAdmin}/products/details/${item.id}` class="btn btn-secondary btn-sm" ) Chi tiết
                 a(href=`${prefixAdmin}/products/edit/${item.id}` class="btn btn-warning btn-sm") Sửa
                 button(class="btn btn-danger btn-sm" data-id=item.id button-delete) Xoá
-
+    +pagination(pagination)
+  
   form(
     action="",
     method="POST",
     id="form-delete-status",
     data-path=`${prefixAdmin}/products/delete`
+  )
+  form(
+    action="",
+    method="POST",
+    id='form-change-status',
+    path=`${prefixAdmin}/products/change-status`
   )

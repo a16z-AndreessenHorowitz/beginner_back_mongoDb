@@ -18,3 +18,22 @@ if(buttonDelete.length>0){
     })
 }
 //Button Delete
+
+
+//Change status
+const buttonChangestatus=document.querySelectorAll("[button-change-status]")
+if(buttonChangestatus.length>0){
+    const formChangeStatus=document.querySelector("#form-change-status")
+    const path=formChangeStatus.getAttribute("path")
+    buttonChangestatus.forEach(button=>{
+        button.addEventListener("click",()=>{
+            const statusCurrent=button.getAttribute("data-status")
+            const id=button.getAttribute("data-id")
+            let statusChange=statusCurrent=="active" ? "inactive" : "active"
+            
+            formChangeStatus.action=`${path}/${statusChange}/${id}?_method=PATCH`
+            formChangeStatus.submit();
+        })
+    })
+}
+// change status 
