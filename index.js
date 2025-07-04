@@ -1,5 +1,10 @@
 const express = require('express')
 const app = express()
+//body parser
+const bodyParser = require('body-parser')
+// body parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded())
+
 //method override
 var methodOverride = require('method-override')
 app.use(methodOverride('_method'))

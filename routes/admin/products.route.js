@@ -9,4 +9,6 @@ route.delete("/delete/:id",controller.deleteItem)
 
 route.patch("/change-status/:status/:id",controller.changeStatus)
 
+route.patch("/change-multi",controller.changeMulti)
+
 module.exports=route

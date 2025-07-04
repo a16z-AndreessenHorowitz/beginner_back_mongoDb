@@ -68,3 +68,62 @@ if(pagination.length>0){
   
 }
 // pagination 
+
+// checkbox 
+  const checkboxMulti=document.querySelector("[checkbox-multi]")
+  if(checkboxMulti){
+    const checkall=checkboxMulti.querySelector("input[name='checkall']")
+    const inputIds=checkboxMulti.querySelectorAll("input[name='id']")
+    checkall.addEventListener("click",()=>{
+      if(checkall.checked==true){
+        inputIds.forEach(input=>{
+          input.checked=true;
+        })
+      }else{
+        inputIds.forEach(input=>{
+          input.checked=false;
+        })
+      }
+    })
+
+    inputIds.forEach(input=>{
+     input.addEventListener("click",()=>{
+        const inputslength=checkboxMulti.querySelectorAll("input[name='id']:checked").length
+        if(inputIds.length==inputslength){
+          checkall.checked=true
+        }else{
+          checkall.checked=false
+        }
+     })
+    })
+
+  } 
+
+// checkbox 
+
+//form change multi
+const formChangeMulti=document.querySelector("[form-change-multi]")
+if(formChangeMulti){
+  formChangeMulti.addEventListener("submit",(e)=>{
+    e.preventDefault()
+
+    const checkboxMulti=document.querySelector("[checkbox-multi]")
+    const inputsChecked=checkboxMulti.querySelectorAll("input[name='id']:checked")
+
+    if(inputsChecked.length > 0){
+      let ids=[]
+      const inputIds=formChangeMulti.querySelector("input[name='ids']")
+      inputsChecked.forEach(input=>{
+        const id=input.value //Hoặc input.getAtribute("value")
+        ids.push(id)
+      })
+      inputIds.value=ids.join(", ")
+      formChangeMulti.submit()
+    }
+    else{
+      alert("Vui lòng chọn ít nhất 1 sản phẩm")
+    }
+    
+  })
+}
+//form change multi
