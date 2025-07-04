@@ -50,80 +50,94 @@ if (buttonStatus.length > 0) {
 //button-status
 
 // pagination 
-const pagination=document.querySelectorAll("[button-pagination]")
-if(pagination.length>0){
-  let url=new URL(window.location.href)
-  pagination.forEach(pageitem=>{
-    pageitem.addEventListener("click",(e)=>{
-      const page=pageitem.getAttribute("button-pagination")
-      if(page){
-        url.searchParams.set("page",page)
-      }
-      else{
+const pagination = document.querySelectorAll("[button-pagination]")
+if (pagination.length > 0) {
+  let url = new URL(window.location.href)
+  pagination.forEach(pageitem => {
+    pageitem.addEventListener("click", (e) => {
+      const page = pageitem.getAttribute("button-pagination")
+      if (page) {
+        url.searchParams.set("page", page)
+      } else {
         url.searchParams.delete("page")
       }
-      window.location.href=url.href
+      window.location.href = url.href
     })
   })
-  
+
 }
 // pagination 
 
 // checkbox 
-  const checkboxMulti=document.querySelector("[checkbox-multi]")
-  if(checkboxMulti){
-    const checkall=checkboxMulti.querySelector("input[name='checkall']")
-    const inputIds=checkboxMulti.querySelectorAll("input[name='id']")
-    checkall.addEventListener("click",()=>{
-      if(checkall.checked==true){
-        inputIds.forEach(input=>{
-          input.checked=true;
-        })
-      }else{
-        inputIds.forEach(input=>{
-          input.checked=false;
-        })
+const checkboxMulti = document.querySelector("[checkbox-multi]")
+if (checkboxMulti) {
+  const checkall = checkboxMulti.querySelector("input[name='checkall']")
+  const inputIds = checkboxMulti.querySelectorAll("input[name='id']")
+  checkall.addEventListener("click", () => {
+    if (checkall.checked == true) {
+      inputIds.forEach(input => {
+        input.checked = true;
+      })
+    } else {
+      inputIds.forEach(input => {
+        input.checked = false;
+      })
+    }
+  })
+
+  inputIds.forEach(input => {
+    input.addEventListener("click", () => {
+      const inputslength = checkboxMulti.querySelectorAll("input[name='id']:checked").length
+      if (inputIds.length == inputslength) {
+        checkall.checked = true
+      } else {
+        checkall.checked = false
       }
     })
+  })
 
-    inputIds.forEach(input=>{
-     input.addEventListener("click",()=>{
-        const inputslength=checkboxMulti.querySelectorAll("input[name='id']:checked").length
-        if(inputIds.length==inputslength){
-          checkall.checked=true
-        }else{
-          checkall.checked=false
-        }
-     })
-    })
-
-  } 
+}
 
 // checkbox 
 
 //form change multi
-const formChangeMulti=document.querySelector("[form-change-multi]")
-if(formChangeMulti){
-  formChangeMulti.addEventListener("submit",(e)=>{
+const formChangeMulti = document.querySelector("[form-change-multi]")
+if (formChangeMulti) {
+  formChangeMulti.addEventListener("submit", (e) => {
     e.preventDefault()
 
-    const checkboxMulti=document.querySelector("[checkbox-multi]")
-    const inputsChecked=checkboxMulti.querySelectorAll("input[name='id']:checked")
-
-    if(inputsChecked.length > 0){
-      let ids=[]
-      const inputIds=formChangeMulti.querySelector("input[name='ids']")
-      inputsChecked.forEach(input=>{
-        const id=input.value //Hoặc input.getAtribute("value")
-        ids.push(id)
-      })
-      inputIds.value=ids.join(", ")
-      formChangeMulti.submit()
+    const checkboxMulti = document.querySelector("[checkbox-multi]")
+    const inputsChecked = checkboxMulti.querySelectorAll("input[name='id']:checked")
+    const typeChange = e.target.elements.type.value
+    //delete việc để ở đây là có chủ đích , để ngăn ngừa người dùng xoá hàng loạt bản ghi
+    if (typeChange == "delete-all") {
+      const isConfirm = confirm("Bạn có chắc chắc muốn xoá không?")
+      if (!isConfirm) {
+        return;
+      }
     }
-    else{
+    //end delete
+    if (inputsChecked.length > 0) {
+      let ids = []
+      const inputIds = formChangeMulti.querySelector("input[name='ids']")
+      inputsChecked.forEach(input => {
+        const id = input.value //Hoặc input.getAtribute("value")
+        if(typeChange=="change-position"){
+          const position=input.closest("tr").querySelector("input[name='position']").value
+          ids.push(`${id}-${position}`)
+        }else{
+          ids.push(id)
+        }
+      })
+    
+
+    inputIds.value=ids.join(", ")
+    formChangeMulti.submit()
+    }
+    else {
       alert("Vui lòng chọn ít nhất 1 sản phẩm")
     }
-    
+
   })
 }
 //form change multi
