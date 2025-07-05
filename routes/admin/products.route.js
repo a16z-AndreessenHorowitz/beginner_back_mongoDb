@@ -1,7 +1,9 @@
 const express=require("express")
 const route=express.Router()
+const productValidate=require("../../validates/product.validate")
 
 const controller=require("../../controllers/admin/product.controller")
+const { validate } = require("../../models/product.model")
 
 route.get("/",controller.index)
 
@@ -13,6 +15,9 @@ route.patch("/change-multi",controller.changeMulti)
 
 route.get("/create",controller.create)
 
-route.post("/create",controller.createPost)
+route.post("/create",
+  productValidate.createPost,
+  controller.createPost
+)
 
 module.exports=route
