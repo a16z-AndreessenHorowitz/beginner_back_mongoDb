@@ -126,3 +126,34 @@ module.exports.changeMulti = async (req, res) => {
   }
   res.redirect(req.get('referer') || '/admin/products');
 }
+
+
+// {GET} /admin/products/create
+module.exports.create=async(req,res)=>{
+    
+  res.render("admin/pages/products/create.pug",{
+      pageTitle:"Trang tổng quan",
+      
+  })
+}
+
+// {POST} /admin/products/create
+module.exports.createPost=async(req,res)=>{
+  req.body.price=parseInt(req.body.price)
+  if(req.body.stock){
+  req.body.stock=parseInt(req.body.stock)
+  }
+  if(req.body.discountPercentage){
+    req.body.discountPercentage=parseInt(req.body.discountPercentage)
+  }
+  if(req.body.position==""){
+    const countPosition=await Product.countDocuments()
+    req.body.position=countPosition+1;
+  }else{
+    req.body.position=parseInt(req.body.position)
+  }
+  const product=new Product(req.body)
+  await product.save()
+  req.flash('success','Đã thêm sản phẩm thành công!')
+  res.redirect(req.get('referer') || '/admin/products');
+}
