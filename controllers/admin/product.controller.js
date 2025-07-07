@@ -152,8 +152,12 @@ module.exports.createPost=async(req,res)=>{
   }else{
     req.body.position=parseInt(req.body.position)
   }
+  if(req.file){
+    req.body.thumbnail=`/upload/${req.file.filename}`//vào thư mục public
+  }
   const product=new Product(req.body)
   await product.save()
+ 
   req.flash('success','Đã thêm sản phẩm thành công!')
-  res.redirect(req.get('referer') || '/admin/products');
+  res.redirect(`/admin/products`);
 }

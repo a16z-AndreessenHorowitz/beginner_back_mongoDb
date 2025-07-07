@@ -1,9 +1,13 @@
 const express=require("express")
 const route=express.Router()
 const productValidate=require("../../validates/product.validate")
+//ảnh
+const storageMulter=require("../../helpers/storeRage")
+const multer  = require('multer')
+const upload = multer({ storage:  storageMulter() })
 
 const controller=require("../../controllers/admin/product.controller")
-const { validate } = require("../../models/product.model")
+
 
 route.get("/",controller.index)
 
@@ -16,6 +20,7 @@ route.patch("/change-multi",controller.changeMulti)
 route.get("/create",controller.create)
 
 route.post("/create",
+  upload.single('thumbnail'),
   productValidate.createPost,
   controller.createPost
 )

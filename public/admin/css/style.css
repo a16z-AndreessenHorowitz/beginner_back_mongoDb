@@ -88,3 +88,20 @@ html, body {
     cursor: pointer;
 }
 /* end flash  */
+
+/* ảnh review  */
+.image-review{
+    width: 150px;
+    height: auto;
+    margin-top: 15px;
+    border: 1px solid #ddd;
+    padding:15px;
+    border-radius: 5px;
+}
+.image-review[src=""]{
+  display: none;  
+}
+.hidden{
+  display: none;
+}
+/* ảnh review  */
