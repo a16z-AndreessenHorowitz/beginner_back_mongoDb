@@ -18,7 +18,7 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(flash());
-
+  
 //locals
 const systemConfig=require("./config/system")
 app.locals.prefixAdmin=systemConfig.prefixAdmin

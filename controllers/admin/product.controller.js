@@ -15,6 +15,13 @@ module.exports.index = async (req, res) => {
   if (req.query.status) {
     find.status = req.query.status
   }
+  //Đoạn này sort
+  let sort={}
+  if(req.query.sortKey && req.query.sortValue){
+    sort[req.query.sortKey]=req.query.sortValue
+  }else{
+    sort.position="desc";
+  }
   //Đoạn này search
   const objectSearch = searchHelper(req.query)
   if (objectSearch.regax) {
@@ -27,7 +34,7 @@ module.exports.index = async (req, res) => {
     currentPage: 1,
     limitItem: 4,
   }, req.query, countProducts)
-  const product = await Product.find(find).limit(objectPagiantion.limitItem).skip(objectPagiantion.skip).sort({"position":"desc"})
+  const product = await Product.find(find).limit(objectPagiantion.limitItem).skip(objectPagiantion.skip).sort(sort)
 
   res.render("admin/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
@@ -152,9 +159,11 @@ module.exports.createPost=async(req,res)=>{
   }else{
     req.body.position=parseInt(req.body.position)
   }
-  if(req.file){
-    req.body.thumbnail=`/upload/${req.file.filename}`//vào thư mục public
-  }
+  //phần code này chuyển qua upCLoud
+  // if(req.file){
+  //   req.body.thumbnail=`/upload/${req.file.filename}`//vào thư mục public
+  // }
+
   const product=new Product(req.body)
   await product.save()
  

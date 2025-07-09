@@ -2,10 +2,12 @@ const express=require("express")
 const route=express.Router()
 const productValidate=require("../../validates/product.validate")
 //ảnh
-const storageMulter=require("../../helpers/storeRage")
+// const storageMulter=require("../../helpers/storeRage")
+const uploadCloud=require("../../middlewares/admin/uploadCloud")
 const multer  = require('multer')
-const upload = multer({ storage:  storageMulter() })
-
+// const upload = multer({ storage:  storageMulter() })
+const fileUpload = multer()
+//end ảnh
 const controller=require("../../controllers/admin/product.controller")
 
 
@@ -20,7 +22,8 @@ route.patch("/change-multi",controller.changeMulti)
 route.get("/create",controller.create)
 
 route.post("/create",
-  upload.single('thumbnail'),
+  fileUpload.single('thumbnail'),
+  uploadCloud.upload,
   productValidate.createPost,
   controller.createPost
 )
