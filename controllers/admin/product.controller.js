@@ -3,6 +3,7 @@ const systemConfig = require("../../config/system")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const objectPagiantionHelper = require("../../helpers/pagination")
+
 // {GET} /admin/products 
 module.exports.index = async (req, res) => {
   //Đoạn này bộ lọc
@@ -168,5 +169,58 @@ module.exports.createPost=async(req,res)=>{
   await product.save()
  
   req.flash('success','Đã thêm sản phẩm thành công!')
+  res.redirect(`/admin/products`);
+}
+
+// {GET} /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+  const id=req.params.id
+  const product=await Product.findOne({
+    _id:id,
+    deleted:false
+  })
+
+  res.render("admin/pages/products/detail", {
+    pageTitle: product.title,
+    product:product
+  })
+}
+
+// {GET} /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+  try{
+    const id=req.params.id
+    const product=await Product.findOne({
+      _id:id,
+      deleted:false
+    })
+
+    res.render("admin/pages/products/edit", {
+      pageTitle:"Chỉnh sửa sản phẩm",
+      product:product
+    })
+  }catch(error){
+      res.redirect(req.get('referer') || `/admin/products/edit/${req.body.id}`);
+  }
+}
+
+// {PATCH} /admin/products/edit/:id
+module.exports.editPost = async (req, res) => {
+    req.body.price=parseInt(req.body.price)
+  
+  req.body.discountPercentage=parseInt(req.body.discountPercentage)
+  req.body.stock=parseInt(req.body.stock)
+  req.body.position=parseInt(req.body.position)
+
+  try{
+    await Product.updateOne({
+      _id:req.params.id
+    },{
+      ...req.body,
+    })
+  req.flash('success',`Cập nhật sản phẩm thành công!`)
+  }catch(error){
+    req.flash('error',`Cập nhật sản phẩm không thành công!`)
+  }
   res.redirect(`/admin/products`);
 }

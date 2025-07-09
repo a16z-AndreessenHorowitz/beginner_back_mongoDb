@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+ 
+block main
+  if(product.title)
+    h1(class="mb-4") #{product.title} 
+  if(product.price) 
+    p(class="mb-4") Giá: <b>#{product.price}$ </b>
+
+  if(product.discountPercentage) 
+    p(class="mb-4") Giảm Giá: <b>#{product.discountPercentage}$ </b>
+
+  if(product.stock) 
+    p(class="mb-4") Giảm Giá: <b>#{product.stock} </b>
+  
+  if(product.thumbnail)
+    div(class="mb-4")
+      img(src=product.thumbnail
+        style="width:100px"  
+      )
+
+  if(product.status)
+    div(class="mb-4")
+      span Trạng thái 
+      if(product.status=="active")
+        span(class="badge badge-danger") Hoạt động
+      if(product.status=="inactive")
+        span(class="badge badge-danger") Ngưng hoạt động
+
+  if(product.position)
+    div(class="mb-4") Vị trí: <b>#{product.position}</b>
+
+  if(product.description)
+    div(class="mb-4") !{product.description}
+
+  a(href=`${prefixAdmin}/products/edit/${product.id}` class="btn btn-warning") Chỉnh sửa
+ 

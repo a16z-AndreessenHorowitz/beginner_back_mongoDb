@@ -28,4 +28,15 @@ route.post("/create",
   controller.createPost
 )
 
+route.get("/details/:id",controller.detail)
+
+route.get("/edit/:id",controller.edit)
+
+route.patch("/edit/:id",
+  fileUpload.single('thumbnail'),
+  uploadCloud.upload,
+  productValidate.createPost,
+  controller.editPost
+)
+
 module.exports=route
