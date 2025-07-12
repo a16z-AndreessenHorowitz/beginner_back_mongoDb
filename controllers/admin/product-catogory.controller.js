@@ -27,21 +27,14 @@ module.exports.index=async(req,res)=>{
       find.title = objectSearch.regax
     }
     //Pagination
-    const countProducts = await ProductCateGory.countDocuments(find)
-  
-    let objectPagiantion = objectPagiantionHelper({
-      currentPage: 1,
-      limitItem: 4,
-    }, req.query, countProducts)
-
-    const records = await ProductCateGory.find(find).limit(objectPagiantion.limitItem).skip(objectPagiantion.skip).sort(sort)
+    
+    const records = await ProductCateGory.find(find).sort(sort)
   
     res.render("admin/pages/product-category/index", {
       pageTitle: "Danh sách sản phẩm",
       records: records,
       filterStatus: filterStatus,
       keyword: objectSearch.keyword,
-      pagination: objectPagiantion
     })
 }
 
@@ -73,7 +66,7 @@ module.exports.create=async (req, res)=>{
 
   const records=await ProductCateGory.find(find)
 
-  res.render("admin/pages/products-category/create",{
+  res.render("admin/pages/product-category/create",{
       pageTitle:"Tạo danh mục sản phẩm",
       records:records
   })
@@ -123,8 +116,6 @@ module.exports.changeMulti= async(req,res)=>{
 
 // [POST] /admin/products/create
 module.exports.createPost=async (req,res)=>{
-  const permissons=res.locals.role.permissons
-    if(permissons.includes("products-category_create")){
     if(req.body.position==""){
 		const countProducts=await ProductCateGory.countDocuments({}) 
       req.body.position=countProducts+1;
@@ -137,10 +128,6 @@ module.exports.createPost=async (req,res)=>{
     await record.save()
 
    res.redirect(`${systemConfig.prefixAdmin}/products-category`)
-  }else{
-    res.send("403")
-    return;
-  }
   
 }
 
@@ -153,7 +140,7 @@ module.exports.detail=async(req, res)=>{
     }
     const records=await ProductCateGory.findOne(find)
 
-    res.render(`admin/pages/products-category/detail`,{
+    res.render(`admin/pages/product-category/detail`,{
       pageTitle: records.title,
       records: records
     })
@@ -168,13 +155,34 @@ module.exports.edit=async (req,res)=>{
     const records=await ProductCateGory.findOne({
       _id:id,
       deleted:false
-      })
-  
-    res.render("admin/pages/products-category/edit.pug",{
+    })
+    //cây phân cấp
+      const danhmuc=await ProductCateGory.find({deleted:false})
+
+      function cayphancapdanhmuc(danhmuc,parentId=""){
+        let tree=[]
+        danhmuc.forEach(item => {
+          if(item.parent_id===parentId){
+            const newItem=item
+            const children=cayphancapdanhmuc(danhmuc,item.id)
+            if(children.length>0){
+              newItem.children=children
+            }
+            tree.push(newItem)
+          }
+        }
+      );
+        return tree;
+      }
+        const newDanhmuc=cayphancapdanhmuc(danhmuc)
+        console.log(newDanhmuc)
+    res.render("admin/pages/product-category/edit.pug",{
       pageTitle:"Chỉnh sửa phẩm mới",
       records: records,
+      newDanhmuc:newDanhmuc
     })
     } catch (error) {
+      console.log(error)
       res.redirect(`${systemConfig.prefixAdmin}/products-category`)
     }
   }
