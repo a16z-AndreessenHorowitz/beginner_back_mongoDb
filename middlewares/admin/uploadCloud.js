@@ -30,7 +30,6 @@ module.exports.upload=(req, res, next) =>{
         let result = await streamUpload(req);
         //đường dẫn ảnh
         req.body[req.file.fieldname]=result.url
-        console.log(req.file[req.file.fieldname])
         //req.file[req.file.fieldname] tránh đặt cứng tên name trường gửi lên vì nó có thể thay đổi
         next()
     }

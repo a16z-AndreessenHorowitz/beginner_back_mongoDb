@@ -1,6 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug 
-
+include ../../mixins/selectTree.pug
 block main
   +alert-success(5000)
   +alert-error(5000)
@@ -25,8 +25,7 @@ block main
       )
         option(value="") --Chọn danh mục
           if(newDanhmuc)
-            each item in newDanhmuc
-              option(value=item.id) #{item.title}
+            +selectTree(newDanhmuc)
 
 
 

@@ -29,10 +29,27 @@ module.exports.index=async(req,res)=>{
     //Pagination
     
     const records = await ProductCateGory.find(find).sort(sort)
+    function cayphancapdanhmuc(danhmuc,parentId=""){
+        let tree=[]
+        danhmuc.forEach(item => {
+          if(item.parent_id===parentId){
+            const newItem=item
+            const children=cayphancapdanhmuc(danhmuc,item.id)
+            if(children.length>0){
+              newItem.children=children
+            }
+            tree.push(newItem)
+          }
+        }
+      );
+        return tree;
+      }
+
+    const newRecords=cayphancapdanhmuc(records)
   
     res.render("admin/pages/product-category/index", {
       pageTitle: "Danh sách sản phẩm",
-      records: records,
+      records: newRecords,
       filterStatus: filterStatus,
       keyword: objectSearch.keyword,
     })
@@ -131,7 +148,7 @@ module.exports.createPost=async (req,res)=>{
   
 }
 
-
+// [GET] /admin/products/detail
 module.exports.detail=async(req, res)=>{
   try{
     const find={
@@ -175,7 +192,6 @@ module.exports.edit=async (req,res)=>{
         return tree;
       }
         const newDanhmuc=cayphancapdanhmuc(danhmuc)
-        console.log(newDanhmuc)
     res.render("admin/pages/product-category/edit.pug",{
       pageTitle:"Chỉnh sửa phẩm mới",
       records: records,
