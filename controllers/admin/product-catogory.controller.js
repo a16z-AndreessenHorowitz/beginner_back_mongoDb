@@ -3,6 +3,8 @@ const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const objectPagiantionHelper = require("../../helpers/pagination")
 const ProductCateGory=require("../../models/product-category.model")
+const cayphancapdanhmuc=require("../../helpers/createTree.js")
+
 module.exports.index=async(req,res)=>{
   //Đoạn này bộ lọc
     const filterStatus = filterStatusHelper(req.query)
@@ -29,23 +31,7 @@ module.exports.index=async(req,res)=>{
     //Pagination
     
     const records = await ProductCateGory.find(find).sort(sort)
-    function cayphancapdanhmuc(danhmuc,parentId=""){
-        let tree=[]
-        danhmuc.forEach(item => {
-          if(item.parent_id===parentId){
-            const newItem=item
-            const children=cayphancapdanhmuc(danhmuc,item.id)
-            if(children.length>0){
-              newItem.children=children
-            }
-            tree.push(newItem)
-          }
-        }
-      );
-        return tree;
-      }
-
-    const newRecords=cayphancapdanhmuc(records)
+    const newRecords=cayphancapdanhmuc.tree(records)
   
     res.render("admin/pages/product-category/index", {
       pageTitle: "Danh sách sản phẩm",
@@ -176,22 +162,7 @@ module.exports.edit=async (req,res)=>{
     //cây phân cấp
       const danhmuc=await ProductCateGory.find({deleted:false})
 
-      function cayphancapdanhmuc(danhmuc,parentId=""){
-        let tree=[]
-        danhmuc.forEach(item => {
-          if(item.parent_id===parentId){
-            const newItem=item
-            const children=cayphancapdanhmuc(danhmuc,item.id)
-            if(children.length>0){
-              newItem.children=children
-            }
-            tree.push(newItem)
-          }
-        }
-      );
-        return tree;
-      }
-        const newDanhmuc=cayphancapdanhmuc(danhmuc)
+      const newDanhmuc=cayphancapdanhmuc.tree(danhmuc)
     res.render("admin/pages/product-category/edit.pug",{
       pageTitle:"Chỉnh sửa phẩm mới",
       records: records,
