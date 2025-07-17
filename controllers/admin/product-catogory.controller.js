@@ -47,7 +47,7 @@ module.exports.deleteItem= async(req,res)=>{
   await ProductCateGory.updateOne({_id: id},{deleted:true, deletedAt:new Date()});
 
   req.flash("info","Đã xoá sản phẩm thành công!")
-	res.redirect(`${systemConfig.prefixAdmin}/products`) //chuyển hướng //back chuyển hướng đúng tại trang đó
+	res.redirect(`${systemConfig.prefixAdmin}/products-category`) //chuyển hướng //back chuyển hướng đúng tại trang đó
 }
 
 
@@ -68,11 +68,13 @@ module.exports.create=async (req, res)=>{
   }
 
   const records=await ProductCateGory.find(find)
+  const newRecords=cayphancapdanhmuc.tree(records)
 
   res.render("admin/pages/product-category/create",{
       pageTitle:"Tạo danh mục sản phẩm",
-      records:records
+      records:newRecords
   })
+  
 }
 
 
@@ -182,7 +184,7 @@ module.exports.editPatch= async (req,res)=>{
   }
   try {
     await ProductCateGory.updateOne({_id:req.params.id},req.body)
-    req.flash("info","Cập nhật danh mục thành công!")
+    req.flash("success","Cập nhật danh mục thành công!")
   } catch (error) {
     req.flash("erorr","Cập nhật danh mục không thành công!")
   }
