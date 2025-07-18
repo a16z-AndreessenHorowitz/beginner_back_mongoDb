@@ -48,3 +48,26 @@ if(tablePermission){
   })
 }
 //end permission
+
+//tích ô đã được chọn
+//lấy dữ liệu từ ô dc load ra 
+const dataRecords=document.querySelector("[data-records]")
+if(dataRecords){
+  // lấy ra dữ liệu convert sang mảng
+  const records=JSON.parse(dataRecords.getAttribute("data-records"))
+  const tablePermission=document.querySelector("[table-permission]")
+  //lặp qua từng ô dữ liệu
+  records.forEach((record,index)=>{
+
+    const permissions=record.permission
+    permissions.forEach(permission => {
+      //lấy ra dòng đó
+      const row=tablePermission.querySelector(`[data-name=${permission}]`)
+      //tìm ô input ở index đó
+      const input=row.querySelectorAll("input")[index]
+      
+      input.checked=true
+    });
+  })
+}
+//end tích ô
