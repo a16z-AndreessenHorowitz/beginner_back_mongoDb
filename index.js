@@ -3,7 +3,7 @@ const app = express()
 //body parser
 const bodyParser = require('body-parser')
 // body parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 //method override
 var methodOverride = require('method-override')
