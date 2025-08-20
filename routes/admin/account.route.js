@@ -15,4 +15,11 @@ route.post("/create",
   controller.createPost
 )
 
+route.get("/edit/:id",controller.edit)
+route.patch("/edit/:id",
+  upload.single("avatar"),
+  uploadCould.upload,
+  controller.editPatch
+)
+
 module.exports=route
