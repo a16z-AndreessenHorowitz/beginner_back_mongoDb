@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --inspect index.js",
-    "kill": "kill -9 $(lsof -t -i:3000)",
+    "kill": "kill -9 $(lsof -t -i:3002)",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
