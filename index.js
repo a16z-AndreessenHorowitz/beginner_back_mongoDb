@@ -2,8 +2,10 @@ const express = require('express')
 const app = express()
 //body parser
 const bodyParser = require('body-parser')
+const cookieParser = require("cookie-parser");
 // body parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(cookieParser()); 
 
 //method override
 var methodOverride = require('method-override')
@@ -52,3 +54,4 @@ database.connect()
 app.listen(port,"0.0.0.0", () => {
   console.log(`Example app listening on port ${port}`)
 })
+
