@@ -3,7 +3,7 @@ const systemConfig = require("../../config/system")
 const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const objectPagiantionHelper = require("../../helpers/pagination")
-
+const Account=require("../../models/account.model")
 // {GET} /admin/products 
 module.exports.index = async (req, res) => {
   //Đoạn này bộ lọc
@@ -35,11 +35,20 @@ module.exports.index = async (req, res) => {
     currentPage: 1,
     limitItem: 4,
   }, req.query, countProducts)
-  const product = await Product.find(find).limit(objectPagiantion.limitItem).skip(objectPagiantion.skip).sort(sort)
+  const products = await Product.find(find).limit(objectPagiantion.limitItem).skip(objectPagiantion.skip).sort(sort)
 
+  //Lấy ra thêm thông tin của user
+  for (const product of products){
+    const user=await Account.findOne({
+      _id:product.createdBy.account_id
+    })
+    if(user){
+      product.accountFullName=user.fullName
+    }
+  }
   res.render("admin/pages/products/index", {
     pageTitle: "Danh sách sản phẩm",
-    product: product,
+    product: products,
     filterStatus: filterStatus,
     keyword: objectSearch.keyword,
     pagination: objectPagiantion
@@ -138,7 +147,7 @@ module.exports.changeMulti = async (req, res) => {
 
 // {GET} /admin/products/create
 module.exports.create=async(req,res)=>{
-    
+    // console.log(res.locals.user)
   res.render("admin/pages/products/create.pug",{
       pageTitle:"Trang tổng quan",
       
@@ -164,6 +173,11 @@ module.exports.createPost=async(req,res)=>{
   // if(req.file){
   //   req.body.thumbnail=`/upload/${req.file.filename}`//vào thư mục public
   // }
+
+  //log lịch sử 
+  req.body.createdBy={
+    account_id: res.locals.user.id
+  }
 
   const product=new Product(req.body)
   await product.save()

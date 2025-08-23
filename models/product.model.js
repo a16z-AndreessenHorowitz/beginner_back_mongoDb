@@ -21,6 +21,20 @@ const productSchema = new mongoose.Schema({
         default:false
     },
     position:Number,
+    createdBy:{
+      account_id:String,
+      createdAt:{
+        type:Date,
+        default:Date.now
+      }
+    },
+    deleteddBy:{
+      account_id:String,
+      deletedAt:{
+        type:Date,
+        default:Date.now
+      }
+    }
 
 },{ timestamps: true });
 

@@ -1,5 +1,9 @@
 const express = require('express')
 const app = express()
+
+// Gắn moment vào locals để Pug dùng được
+const moment=require("moment")
+app.locals.moment = moment
 //body parser
 const bodyParser = require('body-parser')
 const cookieParser = require("cookie-parser");
