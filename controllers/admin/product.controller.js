@@ -63,6 +63,12 @@ module.exports.deleteItem = async (req, res) => {
     _id: id
   }, {
     deleted: true,
+
+    //Log thay đổi sản phẩm
+    deletedBy:{
+      account_id:res.locals.user.id,
+      deletedAt:new Date()
+    }
   })
   req.flash("success", "Xoá sản phẩm thành công!")
   res.redirect(`${systemConfig.prefixAdmin}/products`)
