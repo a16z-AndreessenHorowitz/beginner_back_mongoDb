@@ -4,6 +4,8 @@ const filterStatusHelper = require("../../helpers/filterStatus")
 const searchHelper = require("../../helpers/search")
 const objectPagiantionHelper = require("../../helpers/pagination")
 const Account=require("../../models/account.model")
+const ProductCateGory=require("../../models/product-category.model")
+const createTreeHelper=require("../../helpers/createTree")
 // {GET} /admin/products 
 module.exports.index = async (req, res) => {
   //Đoạn này bộ lọc
@@ -153,10 +155,14 @@ module.exports.changeMulti = async (req, res) => {
 
 // {GET} /admin/products/create
 module.exports.create=async(req,res)=>{
-    // console.log(res.locals.user)
+    const find={
+      deleted:false,
+    }
+    const category=await ProductCateGory.find(find)
+    const newCategory=createTreeHelper.tree(category)
   res.render("admin/pages/products/create.pug",{
       pageTitle:"Trang tổng quan",
-      
+      category:newCategory
   })
 }
 

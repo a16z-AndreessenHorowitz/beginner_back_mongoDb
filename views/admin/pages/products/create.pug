@@ -1,6 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
-
+include ../../mixins/selectTree.pug
 block main 
   if(role.permission.includes("products_create"))
     +alert-error(5000)
@@ -18,6 +18,40 @@ block main
           name="title"
           
         )
+      
+      div(class="form-group")
+        lable(for="product_category_id") Danh mục
+        select(
+          class="form-control"
+          id="product_category_id"
+          name="product_category_id"
+        )
+          option(value="") Chọn danh mục
+          if(category)
+            +selectTree(category)
+
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured1"
+          name="featured"
+          value="1"
+        )
+        label(for="featured1" class="form-check-label") Nổi bật
+
+      div(class="form-group form-check form-check-inline")
+        input(
+          type="radio"
+          class="form-check-input"
+          id="featured0"
+          name="featured"
+          value="0"
+          checked
+        )
+        label(for="featured0" class="form-check-label") Không nổi bật
+
+
       div(class="form-group")
         lable(for="desc") Mô tả
         textarea(type="text"
