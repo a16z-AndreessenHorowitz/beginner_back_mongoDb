@@ -4,8 +4,11 @@ const productHelper=require('../../helpers/products')
 const createTreeHelper=require("../../helpers/createTree")
 //{GET} home
 module.exports.index=async(req ,res )=>{
-
-
+  //Lấy ra sản phẩm nổi bật
+  const featureProduct=await Product.find({
+    deleted:false,
+    featured:"1"
+  })
   //Lấy ra danh mục
   const productCategory=await ProductCategory.find({
     deleted:false,
@@ -22,6 +25,7 @@ module.exports.index=async(req ,res )=>{
   res.render("client/pages/home/index",{
       pageTitle:"Trang chủ",
       productsNew:newProducts,
-      layoutProductCategory:newproductCategory
+      layoutProductCategory:newproductCategory,
+      featureProduct:featureProduct
   })
 }
