@@ -9,12 +9,7 @@ module.exports.index=async(req ,res )=>{
     deleted:false,
     featured:"1"
   })
-  //Lấy ra danh mục
-  const productCategory=await ProductCategory.find({
-    deleted:false,
-  })
-  const newproductCategory=createTreeHelper.tree(productCategory)
-  
+
   //Lấy ra sản phẩm
   const productsNew=await Product.find({
     deleted:false,
@@ -25,7 +20,6 @@ module.exports.index=async(req ,res )=>{
   res.render("client/pages/home/index",{
       pageTitle:"Trang chủ",
       productsNew:newProducts,
-      layoutProductCategory:newproductCategory,
       featureProduct:featureProduct
   })
 }
