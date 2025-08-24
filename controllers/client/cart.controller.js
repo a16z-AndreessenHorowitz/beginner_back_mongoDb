@@ -83,3 +83,36 @@ module.exports.addPost=async (req, res)=>{
   }
 }
 
+// [GET] /cart/delete/:productId
+module.exports.delete=async (req, res)=>{
+  const cartId=req.cookies.cartId
+  
+  const productId=req.params.productId
+
+  await Cart.updateOne({
+    _id:cartId,
+  },{
+    $pull: {products : { product_id: productId}}
+  })
+  req.flash("info","Đã xoá sản phẩm thành công!")
+  res.redirect("back")
+}
+
+// [GET] /cart/update/:productId/:quantity
+module.exports.update=async (req, res)=>{
+ const productId=req.params.productId
+ const quantity=req.params.quantity
+ const cartId=req.cookies.cartId
+
+ await Cart.updateOne({
+  _id: cartId,
+  "products.product_id":productId
+ },{
+  $set: { "products.$.quantity": quantity}
+ })
+ req.flash("info","Đã cập nhật sản phẩm thành công!")
+  res.redirect("back")
+}
+
+
+
