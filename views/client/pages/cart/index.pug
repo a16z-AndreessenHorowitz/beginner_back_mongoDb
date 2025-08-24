@@ -1,0 +1,56 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug 
+include ../../mixins/alert.pug 
+ 
+block main 
+  +alert(2000)
+  +alert-error(2000)
+
+  .container.my-3 
+    .row 
+      .col-12 
+        +box-head("Giỏ hàng")
+    
+    .row 
+      .col-12 
+        if(cardDetail.products.length > 0)
+          table(class="tabel table-bordered")
+            thead 
+              tr 
+                th STT 
+                th Ảnh
+                th Tên
+                th Giá
+                th Số lượng 
+                th Tổng tiền 
+            tbody 
+              each item,index in cardDetail.products
+                tr
+                  td  #{index+1}
+                  td
+                    img(src=item.productInfo.thumbnail alt=item.productInfo.title width="80px")
+                  td
+                    a(href=`/products/detail/${item.productInfo.slug}`) #{item.productInfo.title}
+                  td #{item.productInfo.title}
+                  td
+                    input(
+                      type="number"
+                      name="quantity"
+                      value=item.quantity
+                      min="1"
+                      product-id=item.product_id
+                      style="width:60px"
+                    )
+                  td #{item.totalPrice}
+                  td
+                    a(
+                      href=`/cart/delete/${item.product_id}` class='btn btn-success'
+                    ) Xoá
+
+          h3(class="text-right") Tổng đơn hàng:#{cardDetail.totalPrice}$
+          div(class="text-right mt-3")
+            a(href="/checkout" class="btn btn-success") Thanh Toán
+        else 
+          h3 Không có sản phẩm nào
+
+  script(src="/js/cart.js")
