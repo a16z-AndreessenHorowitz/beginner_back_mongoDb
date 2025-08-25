@@ -10,4 +10,7 @@ route.post("/login",controller.loginPost)
 
 route.get("/logout",controller.logout)
 
+route.get("/password/forgot",controller.forgotPassword)
+
+route.post("/password/forgot",controller.forgotPasswordPost)
 module.exports=route
