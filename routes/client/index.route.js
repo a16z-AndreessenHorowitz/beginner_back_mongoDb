@@ -5,13 +5,18 @@ const productRoutes=require("./product.route")
 const cartRoutes=require("./cart.routes")
 const checkoutRoutes=require("./checkout.routes")
 const searchRoutes=require("./search.route")
+const userRoutes=require("./user.route")
+const userMiddleware=require("../../middlewares/client/user.middleware")
 module.exports=(app)=>{
   app.use(categoryMiddleware.category)
   app.use(cartMiddleware.cartId)
+  app.use(userMiddleware.infoUser)
+  
 
   app.use("/",homeRoutes)
   app.use("/products",productRoutes)
   app.use("/cart",cartRoutes)
   app.use("/checkout",checkoutRoutes)
   app.use("/search",searchRoutes)
+  app.use("/user",userRoutes)
 }
