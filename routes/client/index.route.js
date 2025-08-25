@@ -4,6 +4,7 @@ const cartMiddleware=require("../../middlewares/client/cart.middleware")
 const productRoutes=require("./product.route")
 const cartRoutes=require("./cart.routes")
 const checkoutRoutes=require("./checkout.routes")
+const searchRoutes=require("./search.route")
 module.exports=(app)=>{
   app.use(categoryMiddleware.category)
   app.use(cartMiddleware.cartId)
@@ -12,4 +13,5 @@ module.exports=(app)=>{
   app.use("/products",productRoutes)
   app.use("/cart",cartRoutes)
   app.use("/checkout",checkoutRoutes)
+  app.use("/search",searchRoutes)
 }
