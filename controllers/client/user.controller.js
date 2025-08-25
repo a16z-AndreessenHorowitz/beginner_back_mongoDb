@@ -102,6 +102,7 @@ module.exports.forgotPasswordPost= async(req, res)=>{
   })
   if(!user){
     req.flash("error","Email không tồn tại")
+     return res.redirect("back"); // hoặc redirect về form forgot password
   }
   //Lưu thông tin vào DB trước khi gửi email
   const otp=generateHelper.generateRandomNumber(6)
@@ -153,4 +154,26 @@ module.exports.otpPasswordPost= async(req, res)=>{
   })
   res.cookie("tokenUser",user.tokenUser)//trả ra user cho front-end
   res.redirect("/user/password/reset")
+}
+
+// [GET] /user/password/reset
+module.exports.resetPassword= async(req, res)=>{
+  
+   res.render("client/pages/user/reset-password",{
+      pageTitle:"Đổi mật khẩu",
+    })
+}
+
+// [POST] /user/password/reset
+module.exports.resetPasswordPost= async(req, res)=>{
+  const password=req.body.password
+  const tokenUser=req.cookies.tokenUser
+
+  await User.updateOne({
+    tokenUser:tokenUser
+  },{
+    password: md5(password)
+  })
+  
+  res.redirect("/")
 }
