@@ -1,6 +1,7 @@
 const Cart=require("../../models/cart.model")
 const Product = require("../../models/product.model")
 const productHelper=require("../../helpers/products")
+const Order=require("../../models/order.model")
 // [GET]/checkout 
 module.exports.index=async(req,res)=>{
   const cartId=req.cookies.cartId
@@ -31,3 +32,49 @@ module.exports.index=async(req,res)=>{
     cartDetail:cart
   })
 }
+
+// [POST]/checkout/order
+module.exports.order=async(req,res)=>{
+  const cartId=req.cookies.cartId;
+
+  const userInfo=req.body
+
+  const cart=await Cart.findOne({
+    _id:cartId
+  })
+  const products=[];
+
+  for(const product of cart.products){
+    const objectProduct={
+      product_id:product.product_id,
+      price:0,
+      quantity: product.quantity,
+      discountPercentage:0,
+    }
+    const productInfo=await Product.findOne({
+      _id: product.product_id
+    }).select("price discountPercentage")
+
+    objectProduct.price=productInfo.price
+    objectProduct.discountPercentage=productInfo.discountPercentage
+
+    // console.log(objectProduct)
+    products.push(objectProduct)
+  }
+
+  const orderInfo={
+    cart_id:cartId,
+    userInfo:userInfo,
+    products:products
+  }
+  const order=new Order(orderInfo)
+  order.save()
+
+  await Cart.updateOne({
+    _id:cartId
+  },{
+    products:[]
+  })
+  res.redirect(`/checkout/success/${order.id}`)
+}
+
