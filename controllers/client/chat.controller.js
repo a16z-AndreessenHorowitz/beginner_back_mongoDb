@@ -16,7 +16,7 @@ module.exports.index = async (req, res) => {
         await chat.save();
 
         //socket gửi về cho client
-      socket.emit("SERVER_RETURN_MESSAGE",{
+      _io.emit("SERVER_RETURN_MESSAGE",{
         content:content,
         userId:userId,
         fullName:fullName

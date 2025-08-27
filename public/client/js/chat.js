@@ -15,3 +15,26 @@ if(formSearch){
 }
 
 //server return message
+socket.on("SERVER_RETURN_MESSAGE",data=>{
+  const myId=document.querySelector("[my-id]").getAttribute("my-id") //lấy id của form-chat
+  const body=document.querySelector(".chat .inner-body")
+
+  //tạo thẻ div
+  const div=document.createElement("div")
+  let htmlFullName="";
+  //check tin nhắn có phải của người gửi
+  if(myId==data.userId){
+    div.classList.add("inner-outgoing")
+  }else{
+    htmlFullName = `<div class="inner-name">${data.fullName}</div>`
+    div.classList.add("inner-incoming")
+  }
+
+  div.innerHTML=`
+    ${htmlFullName}
+    <div class="inner-content">${data.content}</div>
+  `
+  //thêm vào body
+  body.appendChild(div)
+
+})
