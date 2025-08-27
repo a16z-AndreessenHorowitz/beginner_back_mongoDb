@@ -36,7 +36,9 @@ socket.on("SERVER_RETURN_MESSAGE",data=>{
   `
   //thêm vào body
   body.appendChild(div)
-
+  
+  bodyChat.scrollTop=bodyChat.scrollHeight //cách top đúng bằng chiều cao của scroll
+  
 })
 
 //Sửa croll chat xuống dưới bottom khi load trang   
