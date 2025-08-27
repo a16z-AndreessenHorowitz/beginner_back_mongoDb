@@ -1,0 +1,69 @@
+extends ../../layouts/default.pug 
+include ../../mixins/box-head.pug 
+
+block main 
+  .container
+    .row 
+      .col-12 
+        +box-head("Chat")
+      .col-12
+        .chat(my-id=user.id)
+          .inner-body
+            //- each chat in chats 
+            //-   div(class=(chat.user_id==user.id ? "inner-outgoing": "inner-incoming" ))
+            //-     if(user.id!=chat.user_id)
+            //-       .inner-name #{chat.infoUser.fullName}
+            //-     .inner-content 
+            //-       | #{chat.content}
+            //- div(class="inner-list-typing")
+              div(class="box-typing")
+                div(class="inner-name") Lê văn a
+                div(class="inner-dots")
+                  span
+                  span 
+                  span
+              div(class="box-typing")
+                div(class="inner-name") Lê văn a
+                div(class="inner-dots")
+                  span
+                  span 
+                  span  
+                    | A ơi sang nhà e nha, nhà 
+            .inner-incoming
+                .inner-name Em Yêu
+                .inner-content 
+                    | A ơi sang nhà e nha, nhà e không có ai ở nhà cả
+            .inner-outgoing
+                .inner-name Tớ
+                .inner-content 
+                    | Thế á? ok iu
+            .inner-incoming
+                .inner-name Em Yêu
+                .inner-content 
+                    | Nhanh nha nhanh nha
+            .inner-outgoing
+                .inner-name Tớ
+                .inner-content 
+                    | Ơ đến rồi mà thấy ai ở nhà đâu e? Khóa cửa mà :(
+            .inner-incoming
+                .inner-name Em Yêu
+                .inner-content 
+                    | Thì em bảo nhà e không ai ở nhà mà :))\
+             
+          .inner-foot
+            form(
+                class="inner-form"
+                action=""
+            )
+              input(
+                type="text"
+                placeholder="Nhập nội dung"
+                name="content"
+              )
+              span(class="button-icon btn btn-light mx-2 fa-solid fa-face-smile" )
+                
+              button
+                i.fa-solid.fa-paper-plane
+
+
+            

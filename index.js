@@ -38,6 +38,14 @@ const database=require('./config/database')
 app.set('views', './views')
 app.set('view engine', 'pug')
 
+//Socket
+const { Server } = require('socket.io');
+const { createServer } = require('node:http');
+const server = createServer(app);
+
+const io = new Server(server);
+
+global._io=io
 
 
 //Route
@@ -55,7 +63,7 @@ routeAdmin(app)
 
 database.connect()
 
-app.listen(port,"0.0.0.0", () => {
+server.listen(port,"0.0.0.0", () => {
   console.log(`Example app listening on port ${port}`)
 })
 
