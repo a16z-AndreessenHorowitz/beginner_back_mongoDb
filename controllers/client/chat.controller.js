@@ -24,7 +24,15 @@ module.exports.index = async (req, res) => {
       
     });
 
-    
+    //typing
+    socket.on("CLIENT_SEND_TYPING",async (type)=>{
+      //tất nhiên ông gõ ko nhận dc typing
+      socket.broadcast.emit("SERVER_RETURN_TYPING",{
+        userId:userId,
+        fullName:fullName,
+        type:type
+      })
+    })
 
     
   })
