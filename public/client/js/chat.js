@@ -48,19 +48,24 @@ if(bodyChat){
 }
 
 
+//Hàm showtyping
+const showTyping=()=>{
+    socket.emit("CLIENT_SEND_TYPING","show")
+
+      //cứ mỗi lần gõ là clear timeout
+      clearTimeout(timeOut)
+      timeOut=setTimeout(() => {
+        socket.emit("CLIENT_SEND_TYPING","hidden")
+    }, 3000 );
+}
+
 //gửi typing cho server
 var timeOut;
 
 const input=document.querySelector(".chat .inner-form input[name='content']")
 if(input){
   input.addEventListener("keyup",()=>{
-    socket.emit("CLIENT_SEND_TYPING","show")
-
-    //cứ mỗi lần gõ là clear timeout
-    clearTimeout(timeOut)
-    timeOut=setTimeout(() => {
-      socket.emit("CLIENT_SEND_TYPING","hidden")
-    }, 3000 );
+    showTyping()
   }
 )
 }
