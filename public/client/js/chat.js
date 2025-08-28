@@ -1,3 +1,13 @@
+// file-upload-with-preview
+const upload = new FileUploadWithPreview.FileUploadWithPreview("upload-images");
+document.addEventListener("DOMContentLoaded", () => {
+  new FileUploadWithPreview.FileUploadWithPreview("upload-images", {
+    multiple: true,
+    maxFileCount: 6,
+  });
+});
+
+
 
 //client send message 
 const formSearch=document.querySelector(".inner-form")
