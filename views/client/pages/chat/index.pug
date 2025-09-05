@@ -3,9 +3,11 @@ include ../../mixins/box-head.pug
 
 block main 
   .container
+    include ../../partials/list-btn-user.pug
     .row 
       .col-12 
         +box-head("Chat")
+
       .col-12
         .chat(my-id=user.id)
           .inner-body
@@ -61,7 +63,9 @@ block main
                 placeholder="Nhập nội dung"
                 name="content"
               )
-              .custom-file-container(data-upload-id="upload-images")
+              div(class="custom-file-container" data-upload-id="my-unique-id")
+              
+              input(type="file" name="images" multiple)
               span(class="button-icon btn btn-light mx-2 fa-solid fa-face-smile" )
                 
               button

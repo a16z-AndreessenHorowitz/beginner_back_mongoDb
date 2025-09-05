@@ -10,6 +10,7 @@ const userMiddleware=require("../../middlewares/client/user.middleware")
 const settingMiddleware=require("../../middlewares/client/setting.middleware")
 const chatRoutes=require("./chat.routes")
 const authMiddleware=require("../../middlewares/client/auth.middleware")
+const userSocketRoutes=require("./user_socket.routes")
 module.exports=(app)=>{
   app.use(categoryMiddleware.category)
   app.use(cartMiddleware.cartId)
@@ -23,4 +24,5 @@ module.exports=(app)=>{
   app.use("/search",searchRoutes)
   app.use("/user",userRoutes)
   app.use("/chat",authMiddleware.requireAuth,chatRoutes)
+  app.use("/users",authMiddleware.requireAuth, userSocketRoutes)
 }
