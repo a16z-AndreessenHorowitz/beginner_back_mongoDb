@@ -1,11 +1,26 @@
 const User=require("../../models/user.model")
+const userSocket=require("../../socket/client/user_socket")
 module.exports.notFriend=async(req,res)=>{
+  // socket 
+  userSocket(res)
+  // socket 
+
   const userId=res.locals.user.id
 
-  const users=await User.find({
-    _id:{$ne:userId}, //lấy ra tài khoản trừ thằng này
-    status:"active",
-    deleted:false
+  const myUser=await User.findOne({
+    _id:userId
+  })
+
+  const requestFriend=myUser.requestFriend;// lấy ra cái này để loại trừ nó
+  const acceptFriend=myUser.acceptFriend// lấy ra cái này để loại trừ nó nữa
+
+  const users = await User.find({
+    _id: { 
+      $ne: userId, 
+      $nin: [...requestFriend, ...acceptFriend] 
+    },
+    status: "active",
+    deleted: false
   }).select("id avatar fullName")
 
 

@@ -1,42 +1,10 @@
 const Chat=require("../../models/chat.model")
 const User=require("../../models/user.model")
+const chatSocket=require("../../socket/client/chat.socket")
+
 // [GET] /chat
 module.exports.index = async (req, res) => {
-  const userId=res.locals.user.id
-  const fullName=res.locals.user.fullName
-  //socket
-  _io.once('connection', (socket) => {
-        //socket nhận từ client
-    socket.on("CLIENT_SEND_MESSAGE", async (content) => {
-        //Lưu vào database
-        const chat = new Chat({
-          user_id: userId,
-          content: content
-        })  
-        await chat.save();
-
-        //socket gửi về cho client
-      _io.emit("SERVER_RETURN_MESSAGE",{
-        content:content,
-        userId:userId,
-        fullName:fullName
-      })
-      
-    });
-
-    //typing
-    socket.on("CLIENT_SEND_TYPING",async (type)=>{
-      //tất nhiên ông gõ ko nhận dc typing
-      socket.broadcast.emit("SERVER_RETURN_TYPING",{
-        userId:userId,
-        fullName:fullName,
-        type:type
-      })
-    })
-
-    
-  })
-
+  chatSocket(res)
   //Lấy data từ database 
   const chats=await Chat.find({
     deleted:false
