@@ -40,3 +40,23 @@ let listBtnCancelFriend=document.querySelectorAll("[btn-cancel-friend]")
 // Chức năng huỷ yêu cầu
 
 
+// Chức năng xoá lời mời kết bạn (từ chối)
+let listBtnRefuseFriend=document.querySelectorAll("[btn-refuse-friend]")
+  if(listBtnRefuseFriend.length > 0){
+    listBtnRefuseFriend.forEach(button=>{
+      button.addEventListener("click",()=>{
+        
+        const userId=button.getAttribute("btn-refuse-friend")
+        console.log(userId)
+
+        //thêm cho thẻ cha .add để nó hiện ẩn kết bạn, huỷ
+        // console.log(button.closest((".box-user")))
+        button.closest((".box-user")).classList.add("refuse")
+
+        //gửi lên socket
+        socket.emit("CLIENT_REFUSE_FRIEND",userId)
+      })
+    })
+  }
+// Chức năng xoá lời mời kết bạ
+

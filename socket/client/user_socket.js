@@ -79,5 +79,38 @@ module.exports=(res)=>{
 
     })
 
+    //chức năng từ chối lời mời kết bạn
+    socket.on("CLIENT_REFUSE_FRIEND",async(userId)=>{
+      const myUserId=res.locals.user.id //ở trường hợp này chúng ta đóng vai trò ông B vì chúng ta là người từ chối
+      // Chức năng từ chối: Khi B từ chối A (tương tự A hủy yêu cầu cho B)
+      //   + Xoá A trong accept của B
+      //   + Xoá B trong request của A
+
+      // + Xoá A trong accept của B
+      const exitstainB=await User.findOne({
+        _id: myUserId,
+        acceptFriend: userId
+      })
+      if(exitstainB){
+        await User.updateOne({
+          _id: myUserId
+        },{
+          $pull: {acceptFriend : userId}
+        })
+      }
+
+      // + Xoá B trong request của A
+      const exitstbinA=await User.findOne({
+        _id: userId,
+        acceptFriend: myUserId
+      })
+      if(exitstbinA){
+        await User.updateOne({
+          _id: userId
+        },{
+          $pull: {acceptFriend : myUserId}
+        })
+      }
+    })
   })
 }
