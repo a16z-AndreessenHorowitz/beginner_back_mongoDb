@@ -60,3 +60,25 @@ let listBtnRefuseFriend=document.querySelectorAll("[btn-refuse-friend]")
   }
 // Chức năng xoá lời mời kết bạ
 
+
+
+// Chức năng chấp nhận kết bạn
+let listBtnAcceptFriend=document.querySelectorAll("[btn-accept-friend]")
+  if(listBtnAcceptFriend.length > 0){
+    listBtnAcceptFriend.forEach(button=>{
+      button.addEventListener("click",()=>{
+        
+        const userId=button.getAttribute("btn-accept-friend")
+        console.log(userId)
+
+        //thêm cho thẻ cha .add để nó hiện ẩn kết bạn, huỷ
+        // console.log(button.closest((".box-user")))
+        button.closest((".box-user")).classList.add("accepted")
+
+        //gửi lên socket
+        socket.emit("CLIENT_ACCEPT_FRIEND",userId)
+      })
+    })
+  }
+
+// Chức năng chấp nhận kết bạn

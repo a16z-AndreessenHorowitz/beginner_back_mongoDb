@@ -112,5 +112,59 @@ module.exports=(res)=>{
         })
       }
     })
+
+    //chức năng chấp nhận kết bạn
+    socket.on("CLIENT_ACCEPT_FRIEND",async(A)=>{
+      const B=res.locals.user.id //đây là ông B vì là người đồng ý chấp nhận
+
+      // Khi B chấp nhận kết bạn với A:
+      //   + Thêm userId, room chat của A vào friendList của B
+      //   + Thêm userId, room chat của B vào friendList của A
+      //   + Xoá id của A trong accept của B
+      //   + Xoá id của B trong request của A.    Roomchat id phải trùng nhau
+
+
+      //   + Thêm userId, room chat của A vào friendList của B
+      // + Xoá id của A trong accept của B
+      const existainb=await User.findOne({
+        _id:B,
+        acceptFriend: A
+      })
+      if(existainb){
+        await User.updateOne({
+          _id:B,
+        },{
+          $push:{
+            friendList:{
+                user_id:A,
+                room_chat_id:"",
+            }
+          },
+          $pull : { acceptFriend : A }
+        })
+      }
+
+      //   + Thêm userId, room chat của B vào friendList của A
+      // + Xoá id của B trong request của A.
+      const existbina=await User.findOne({
+        _id:A,
+        requestFriend: B
+      })
+      if(existbina){
+        await User.updateOne({
+          _id: A,
+        },{
+          $push:{
+            friendList:{
+                user_id:B,
+                room_chat_id:"",
+            }
+          },
+          $pull : { requestFriend : B }
+        })
+      }
+
+
+    })
   })
 }
