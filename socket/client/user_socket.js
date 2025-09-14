@@ -51,6 +51,8 @@ module.exports=(res)=>{
             userId:userId,
             lengthAcceptFriends:lengthAcceptFriends
           })
+
+          
     })
     //chức năng huỷ yêu cầu
     socket.on("CLIENT_CANCEL_FRIEND",async(userId)=>{
@@ -86,6 +88,19 @@ module.exports=(res)=>{
           $pull : { requestFriend : userId}
         })
       }
+        
+      
+        //Lấy độ dài mảng acceptFriend của B để trả về cho ông B
+          const infoUserB=await User.findOne({
+            _id:userId,
+          })
+          const lengthAcceptFriends=infoUserB.acceptFriend.length
+          //trả về cho client trừ ông A
+          socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPTFRIEND",{
+            userId:userId,
+            lengthAcceptFriends:lengthAcceptFriends
+          })
+
 
     })
 
