@@ -51,8 +51,17 @@ module.exports=(res)=>{
             userId:userId,
             lengthAcceptFriends:lengthAcceptFriends
           })
-
           
+
+          //Lấy thông tin của A trả ra cho lời mời kết bạn
+          const infoUserA=await User.findOne({
+            _id:myId,
+          }).select("id avatar fullName")
+          socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT_FRIEND",{
+            userId:userId,
+            infoUserA:infoUserA
+          })
+
     })
     //chức năng huỷ yêu cầu
     socket.on("CLIENT_CANCEL_FRIEND",async(userId)=>{

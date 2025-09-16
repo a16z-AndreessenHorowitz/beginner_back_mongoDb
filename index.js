@@ -14,6 +14,7 @@ app.use(cookieParser());
 //method override
 var methodOverride = require('method-override')
 app.use(methodOverride('_method'))
+
 //flash
 var flash = require('express-flash')
 const session = require('express-session');

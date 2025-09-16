@@ -9,7 +9,8 @@ block main
       .col-12 
         +box-head("Lời mời đã nhận")
 
-    .row 
+    //- thuộc tính tự định nghĩa để bắt sự kiện cho nó thêm ngừoi dùng
+    .row(data-users-accept=user.id)
       .col-6 
         each user in users 
           div(class="box-user")
