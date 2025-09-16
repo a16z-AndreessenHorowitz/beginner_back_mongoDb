@@ -26,7 +26,7 @@ if(dataUserAccept){
       //vẽ user ra giao diên
       const div=document.createElement("div")
       div.classList.add("col-6")
-
+      div.setAttribute('user-id',data.infoUserA._id)
       
       div.innerHTML=`
           <div class="box-user">
@@ -68,7 +68,6 @@ if(dataUserAccept){
       buttonRefuse.addEventListener("click",()=>{
         
         const userId=buttonRefuse.getAttribute("btn-refuse-friend")
-        console.log(userId)
 
         //thêm cho thẻ cha .add để nó hiện ẩn kết bạn, huỷ
         // console.log(buttonRefuse.closest((".box-user")))
@@ -85,3 +84,19 @@ if(dataUserAccept){
 
 
 // SERVER_RETURN_INFO_ACCEPT_FRIEND
+
+
+// SERVER_RETURN_USER_ID_CANCEL_FRIEND
+socket.on("SERVER_RETURN_USER_ID_CANCEL_FRIEND",(data)=>{
+  const userIdA=data.userIdA
+  const boxUserRemove=document.querySelector(`[user-id='${userIdA}']`)
+  if(boxUserRemove){
+    const dataUserAccept=document.querySelector("[data-users-accept]")
+    const userIdB=badeUserAccept.querySelector("[data-users-accept]")
+    if(userIdB==data.userIdB){// tránh trường hợp thằng nào cx xoá
+       dataUserAccept.removeChild(boxUserRemove)
+    }
+   
+  }
+})
+// SERVER_RETURN_USER_ID_CANCEL_FRIEND
