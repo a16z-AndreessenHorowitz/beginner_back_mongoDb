@@ -78,6 +78,21 @@ if(dataUserAccept){
         })
       //bắt sự kiện cho nút huỷ lời mời kết bạn
 
+
+        //bắt sự kiện cho nút Accept
+        const buttonAccept=div.querySelector("[btn-accept-friend]")
+        buttonAccept.addEventListener("click",()=>{
+        
+        const userId=buttonAccept.getAttribute("btn-accept-friend")
+        console.log(userId)
+
+        //thêm cho thẻ cha .add để nó hiện ẩn kết bạn, huỷ
+        // console.log(buttonAccept.closest((".box-user")))
+        buttonAccept.closest((".box-user")).classList.add("accepted")
+
+        //gửi lên socket
+        socket.emit("CLIENT_ACCEPT_FRIEND",userId)
+      })
     }
 })
 }
